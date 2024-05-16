@@ -23,7 +23,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'm75(w&h6pivjkvi$8jk7j6q^cl+ru1ehe^*lzs^hz&_8!qf^ep'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = bool(int(os.environ.get('DEBUG', 0)))
 
 ALLOWED_HOSTS = ['127.0.0.1','0.0.0.0']
 
@@ -74,20 +75,21 @@ WSGI_APPLICATION = 'docker_app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-# DATABASES = {
-#    'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': os.environ.get('PG_DB'),
-#         'USER': os.environ.get('PG_USER'),
-#         'PASSWORD':os.environ.get('PG_PASSWORD'),
-#         'HOST': os.environ.get('PG_HOST'),
-#         'PORT': os.environ.get('PG_PORT'),
-#     }
-# }
-import dj_database_url # type: ignore
 DATABASES = {
-    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL','postgres://avnadmin:AVNS_YWCvaKHkSZ7VtMzx065@pg-3e9ef4a5-msbala2848-82c6.l.aivencloud.com:23774/defaultdb?sslmode=require'))
+   'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('PG_DB'),
+        'USER': os.environ.get('PG_USER'),
+        'PASSWORD':os.environ.get('PG_PASSWORD'),
+        'HOST': os.environ.get('PG_HOST'),
+        # 'PORT': os.environ.get('PG_PORT'),
+    }
 }
+
+# import dj_database_url # type: ignore
+# DATABASES = {
+#     'default': dj_database_url.config(default=os.environ.get('DATABASE_URL','postgres://avnadmin:AVNS_YWCvaKHkSZ7VtMzx065@pg-3e9ef4a5-msbala2848-82c6.l.aivencloud.com:23774/defaultdb?sslmode=require'))
+# }
 
 
 # Password validation
