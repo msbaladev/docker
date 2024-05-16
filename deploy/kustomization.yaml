@@ -1,0 +1,6 @@
+secretGenerator:
+  - name: db_password
+    literals:
+      - password=devpassword123
+resources:
+  - postgres.yaml
