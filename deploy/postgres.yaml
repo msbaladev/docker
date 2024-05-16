@@ -9,16 +9,16 @@ spec:
     matchLabels:
       app: django
       tier: postgres
-    strategy:
-      type: Recreate
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
-        app: myapp
+        app: django
         tier: postgres
     spec:
       containers:
-      - name: myapp
+      - name: django
         image: postgres
         resources:
           limits:
@@ -33,7 +33,8 @@ spec:
           - name: POSTGRES_USER
             value: devuser
           - name: POSTGRES_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: db_password
-                key: password
+            value: devpassword123
+            # valueFrom:
+            #   secretKeyRef:
+            #     name: db_password
+            #     key: password
