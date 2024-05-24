@@ -1,33 +1,33 @@
-
 apiVersion: v1
 kind: Service
 metadata:
-  name: django-postgres
+  name: django
   labels:
     app: django
 spec:
   selector:
     app: django
-    tier: postgres
+    tier: app
   ports:
-  - port: 5432
-    targetPort: 5432
-  clusterIP: None
+  - port: 8000
+  type: LoadBalancer
+
 
 ---
 
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgresql-pvc
+  name: django-pvc
   labels:
     app: django
 spec:
-  accessModes:
-    - ReadWriteOnce
   resources:
     requests:
       storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+
 
 
 ---
@@ -35,40 +35,40 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres
-  namespace: default  # Change this to your desired namespace if needed
+  name: django
   labels:
-    app: django-postgres
+    app: django
 spec:
   selector:
     matchLabels:
       app: django
-      tier: postgres
+      tier: app
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
         app: django
-        tier: postgres
+        tier: app
     spec:
       volumes:
-        - name: postgres-data
+        - name: django-data
           persistentVolumeClaim:
-            claimName: postgresql-pvc      
+            claimName: django-pvc
       containers:
-        - name: django
-          image: postgres
+        - image: django-app:latest
+          imagePullPolicy: Never
+          name: app
           resources:
             limits:
               memory: "128Mi"
               cpu: "500m"
           ports:
-            - containerPort: 5432
-              name: postgres
+            - containerPort: 8000
+              name: app
           volumeMounts:
-            - name: postgres-data
-              mountPath: /var/lib/postgresql/data
+            - name: django-data
+              mountPath: /vol/web
           env:
             - name: POSTGRES_DB
               value: koyebdb
@@ -79,4 +79,5 @@ spec:
             - name: POSTGRES_HOST
               value: ep-ancient-glade-a12qjarc.ap-southeast-1.pg.koyeb.app
          
-
+        
+     

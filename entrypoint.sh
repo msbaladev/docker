@@ -1,16 +1,10 @@
 #!/bin/sh
 
-set -e
 
 
-echo "Create migrations"
-python manage.py makemigrations
-echo "=================================="
+APP_PORT=${PORT:-8010}
+cd /app/
 
-echo "Migrate"
-python manage.py migrate 
-echo "=================================="
+/env/bin/gunicorn  docker_app.wsgi:application --bind "0.0.0.0:${APP_PORT}"
 
-
-echo "Stating server"
-# python manage.py runserver 
+# /env//bin/gunicorn  docker_app.wsgi:application

@@ -26,10 +26,12 @@ RUN python -m venv /env && \
 COPY ./entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
+  
+
 ENV PATH="/entrypoint:/env/bin:$PATH"
+
+
 
 COPY . /app/
 
-# ENTRYPOINT ["/app/entrypoint.sh"]
-EXPOSE 80
 CMD ["/app/entrypoint.sh"]

@@ -24,7 +24,7 @@ SECRET_KEY = 'm75(w&h6pivjkvi$8jk7j6q^cl+ru1ehe^*lzs^hz&_8!qf^ep'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(int(os.environ.get('DEBUG', 0)))
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1','0.0.0.0']
 
@@ -78,11 +78,11 @@ WSGI_APPLICATION = 'docker_app.wsgi.application'
 DATABASES = {
    'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('PG_DB'),
-        'USER': os.environ.get('PG_USER'),
-        'PASSWORD':os.environ.get('PG_PASSWORD'),
-        'HOST': os.environ.get('PG_HOST'),
-        # 'PORT': os.environ.get('PG_PORT'),
+        'NAME': os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD':os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT'),
     }
 }
 
