@@ -10,10 +10,16 @@ services:
     volumes:
       - .:/app
       - dev-app-data:/vol/web
+      - static_volume:/app/staticfiles
     env_file:
       - .env
+    environment:
+      - PORT=8010
     ports:
       - 8001:8010
+    networks:
+      - my_network
+
     depends_on:
       database:
          condition: service_healthy
@@ -25,14 +31,36 @@ services:
       - dev-db-data:/var/lib/postgresql/data
     env_file:
       - .env
+    
     expose:
       - 5432
+    networks:
+      - my_network
+
     healthcheck:
       test: ["CMD", "pg_isready", "-q", "-d", "${POSTGRES_DB}", "-U", "${POSTGRES_USER}"]
       interval: 5s
       timeout: 5s
       retries: 5
-      
+
+
+  nginx:
+   image: nginx:alpine
+   volumes:
+     - ./nginx.conf:/nginx.conf
+     - static_volume:/app/staticfiles
+   ports:
+      - 8002:80
+   depends_on:
+     - djangoapp
+
+
+networks:
+  my_network:
+    driver: bridge
+
+    
 volumes:
   dev-db-data:
   dev-app-data:
+  static_volume:

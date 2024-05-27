@@ -15,3 +15,9 @@ class rooms(models.Model):
 class data(models.Model):
     room_name = models.CharField(max_length=100)
     room_password = models.CharField(max_length=100)
+    
+class blogs(models.Model):
+    title = models.CharField(max_length=100)
+    content = models.TextField()
+    
+    

@@ -9,7 +9,7 @@ spec:
     app: django
     tier: app
   ports:
-  - port: 8000
+  - port: 8010
   type: LoadBalancer
 
 
@@ -64,7 +64,7 @@ spec:
               memory: "128Mi"
               cpu: "500m"
           ports:
-            - containerPort: 8000
+            - containerPort: 8001
               name: app
           volumeMounts:
             - name: django-data
@@ -78,6 +78,8 @@ spec:
               value: 13wqlOYPXprC
             - name: POSTGRES_HOST
               value: ep-ancient-glade-a12qjarc.ap-southeast-1.pg.koyeb.app
+            - name: POSTGRES_PORT
+              value: "5432"
          
         
      
